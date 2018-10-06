@@ -1,0 +1,24 @@
+version: '2'
+services:
+  redirect:
+    build: .
+    image: redirect
+    hostname: heptapod.net
+    restart: always
+    environment:
+      REDIRECT_TARGET: https://octobus.net/blog/2018-09-18-heptapod-announce.html
+
+    networks:
+      - web
+    labels:
+      - "traefik.backend=heptapod"
+      - "traefik.docker.network=webgateway"
+      - "traefik.frontend.rule=Host:heptapod.net"
+      - "traefik.port=80"
+      - "traefik.enable=true"
+      - "traefik.default.protocol=http"
+
+networks:
+  web:
+    external:
+      name: traefik_webgateway
